@@ -1,0 +1,35 @@
+# Python cache/build artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Training/runtime outputs
+logs/
+unitree_rl_gym-main/logs/
+runs/
+wandb/
+*.log
+
+# Large local archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# IDE/local machine files
+.vscode/
+.idea/
+.DS_Store
+
+# Native/simulation generated files
+*.so
+*.o
+*.obj
+*.tmp
