@@ -1,0 +1,19 @@
+diff --git a/rsl_rl/utils/utils.py b/rsl_rl/utils/utils.py
+index b6affab..378d971 100644
+--- a/rsl_rl/utils/utils.py
++++ b/rsl_rl/utils/utils.py
+@@ -61,0 +62,14 @@
++    # pad_sequence only pads to the longest trajectory in this rollout. When
++    # every environment terminates before the rollout horizon, that length is
++    # shorter than tensor.shape[0], while trajectory_masks still uses the full
++    # horizon. Keep both tensors at the same time dimension for RNN updates.
++    padding_steps = tensor.shape[0] - padded_trajectories.shape[0]
++    if padding_steps > 0:
++        padding = torch.zeros(
++            padding_steps,
++            *padded_trajectories.shape[1:],
++            dtype=padded_trajectories.dtype,
++            device=padded_trajectories.device,
++        )
++        padded_trajectories = torch.cat((padded_trajectories, padding), dim=0)
++

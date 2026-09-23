@@ -5,16 +5,16 @@ class G1RoughCfg( LeggedRobotCfg ):
         pos = [0.0, 0.0, 0.8] # x,y,z [m]
         default_joint_angles = { # = target angles [rad] when action = 0.0
            'left_hip_yaw_joint' : 0. ,   
-           'left_hip_roll_joint' : 0,               
-           'left_hip_pitch_joint' : -0.1,         
+           'left_hip_roll_joint' : 0,
+           'left_hip_pitch_joint' : -0.1737,
            'left_knee_joint' : 0.3,       
-           'left_ankle_pitch_joint' : -0.2,     
+           'left_ankle_pitch_joint' : -0.1263,
            'left_ankle_roll_joint' : 0,     
            'right_hip_yaw_joint' : 0., 
            'right_hip_roll_joint' : 0, 
-           'right_hip_pitch_joint' : -0.1,                                       
+           'right_hip_pitch_joint' : -0.1737,
            'right_knee_joint' : 0.3,                                             
-           'right_ankle_pitch_joint': -0.2,                              
+           'right_ankle_pitch_joint': -0.1263,
            'right_ankle_roll_joint' : 0,       
            'torso_joint' : 0.
         }
@@ -39,17 +39,19 @@ class G1RoughCfg( LeggedRobotCfg ):
         # PD Drive parameters:
         control_type = 'P'
           # PD Drive parameters:
-        stiffness = {'hip_yaw': 100,
-                     'hip_roll': 100,
-                     'hip_pitch': 100,
-                     'knee': 150,
-                     'ankle': 40,
+        stiffness = {'hip_yaw': 150,
+                     'hip_roll': 150,
+                     'hip_pitch': 150,
+                     'knee': 225,
+                     "ankle_pitch_joint": 80,
+                     "ankle_roll_joint": 30,
                      }  # [N*m/rad]
         damping = {  'hip_yaw': 2,
                      'hip_roll': 2,
                      'hip_pitch': 2,
                      'knee': 4,
-                     'ankle': 2,
+                     "ankle_pitch_joint": 3,
+                     "ankle_roll_joint": 2,
                      }  # [N*m/rad]  # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
         action_scale = 0.25
@@ -67,7 +69,7 @@ class G1RoughCfg( LeggedRobotCfg ):
   
     class rewards( LeggedRobotCfg.rewards ):
         soft_dof_pos_limit = 0.9
-        base_height_target = 0.78
+        base_height_target = 0.784
         
         class scales( LeggedRobotCfg.rewards.scales ):
             tracking_lin_vel = 1.0
@@ -103,7 +105,7 @@ class G1RoughCfgPPO( LeggedRobotCfgPPO ):
         entropy_coef = 0.01
     class runner( LeggedRobotCfgPPO.runner ):
         policy_class_name = "ActorCriticRecurrent"
-        max_iterations = 10000
+        max_iterations = 15000
         run_name = ''
         experiment_name = 'g1'
 

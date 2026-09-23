@@ -1,0 +1,55 @@
+# G1 Unity Sim2Sim policy service configuration.
+policy_path: "{LEGGED_GYM_ROOT_DIR}/logs/g1/exported/policies/policy_lstm.pt"
+# Unity connects to this Python computer's LAN address on port 9002.
+host: "0.0.0.0"
+port: 9002
+device: "cpu"
+
+# Isaac Gym uses dt=0.005 and control decimation=4, so the policy runs at 50 Hz.
+control_dt: 0.02
+gait_period: 0.8
+num_observations: 47
+num_actions: 12
+
+# This exact order is part of the policy interface contract.
+joint_names:
+  - left_hip_pitch_joint
+  - left_hip_roll_joint
+  - left_hip_yaw_joint
+  - left_knee_joint
+  - left_ankle_pitch_joint
+  - left_ankle_roll_joint
+  - right_hip_pitch_joint
+  - right_hip_roll_joint
+  - right_hip_yaw_joint
+  - right_knee_joint
+  - right_ankle_pitch_joint
+  - right_ankle_roll_joint
+
+default_joint_positions: [-0.1737, 0.0, 0.0, 0.3,-0.1263, 0.0,
+                          -0.1737, 0.0, 0.0, 0.3,-0.1263, 0.0]
+
+observation_scales:
+  angular_velocity: 0.25
+  command: [2.0, 2.0, 0.25]
+  joint_position: 1.0
+  joint_velocity: 0.05
+
+# Commands are [forward velocity, left velocity, yaw velocity].
+# Units are [m/s, m/s, rad/s].
+command_limits:
+  minimum: [-1.0, -1.0, -1.0]
+  maximum: [1.0, 1.0, 1.0]
+
+action_scale: 0.25
+
+# Unity sends state normally during this period, but the server does not run the
+# policy yet. It returns {"type":"hold"}; the Unity client keeps its default
+# standing pose. Set to 0.0 to disable this startup delay.
+startup_delay_s: 5.0
+
+# Reference PD gains. Unity should apply target_joint_position with equivalent drives.
+stiffness: [150.0, 150.0, 150.0, 225.0, 80.0, 30.0,
+            150.0, 150.0, 150.0, 225.0, 80.0, 30.0]
+damping: [2, 2, 2, 4, 3, 2,
+          2, 2, 2, 4, 3, 2]
